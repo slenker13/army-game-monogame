@@ -16,6 +16,7 @@ namespace ArmyGame
         // Game objects
         Camera2D camera;
         Player player;
+        Wall wall1;
 
         // Input states
         KeyboardState keyboardState;
@@ -49,6 +50,9 @@ namespace ArmyGame
 
             // Create player
             player = new Player(new Vector2(levelWidth / 2, levelHeight / 2));
+
+            // Create walls
+            wall1 = new Wall(GraphicsDevice, new Vector2(600f, 300f), 40, 400, Color.Black);
 
             base.Initialize();
         }
@@ -88,6 +92,7 @@ namespace ArmyGame
 
             // Draw Entities
             player.Draw(_spriteBatch, camera.Position);
+            wall1.Draw(_spriteBatch, camera.Position);
 
             _spriteBatch.End();
 
