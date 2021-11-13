@@ -27,6 +27,9 @@ namespace ArmyGame
         Player player;
         Wall wall1;
 
+        // Game objects
+        BulletManager bulletManager;
+
         // Input states
         KeyboardState keyboardState;
         MouseState mouseState;
@@ -63,6 +66,9 @@ namespace ArmyGame
             // Init entity list
             entityList = new List<Entity>();
 
+            // Bullet manager
+            bulletManager = new BulletManager(GraphicsDevice, 5);
+
             // Create player
             player = new Player(new Vector2(levelWidth / 2, levelHeight / 2));
             entityList.Add(player);
@@ -93,8 +99,9 @@ namespace ArmyGame
             mouseState = Mouse.GetState();
 
             // Update objects
-            player.Update(gameTime, keyboardState, mouseState, levelWidth, levelHeight, camera.Position, entityList);
+            player.Update(gameTime, keyboardState, mouseState, levelWidth, levelHeight, camera.Position, entityList, bulletManager);
             camera.Update(new Vector2((player.Position.X + player.Width / 2) - _graphics.PreferredBackBufferWidth / 2, (player.Position.Y + player.Height / 2) - _graphics.PreferredBackBufferHeight / 2));
+            bulletManager.UpdateBullets(gameTime, levelWidth, levelHeight, entityList);
 
             base.Update(gameTime);
         }
@@ -114,6 +121,7 @@ namespace ArmyGame
             // Draw entities
             player.Draw(_spriteBatch, camera.Position);
             wall1.Draw(_spriteBatch, camera.Position);
+            bulletManager.DrawBullets(_spriteBatch, camera.Position);
 
             // Draw text
             // _spriteBatch.DrawString(font, "FPS: " + frameRate, new Vector2(_graphics.PreferredBackBufferWidth - 100, 10), Color.Black);

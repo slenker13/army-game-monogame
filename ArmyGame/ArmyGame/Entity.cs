@@ -78,6 +78,9 @@ namespace ArmyGame
             }
         }
 
+        // Deletion flag
+        public bool Remove { get; set; }
+
         
         // Constructors
         public Entity()
@@ -86,6 +89,7 @@ namespace ArmyGame
             Position = new Vector2(0, 0);
             Width = 0;
             Height = 0;
+            Remove = false;
         }
         public Entity(Vector2 position)
         {
@@ -93,6 +97,7 @@ namespace ArmyGame
             Position = position;
             Width = 0;
             Height = 0;
+            Remove = false;
         }
         public Entity(Vector2 position, int width, int height)
         {
@@ -100,12 +105,14 @@ namespace ArmyGame
             Position = position;
             Width = width;
             Height = height;
+            Remove = false;
         }
         public Entity(Vector2 position, Texture2D texture)
         {
             collider = new Rectangle();
             Position = position;
             Texture = texture;
+            Remove = false;
         }
 
         // Checks if the collider intersects the other entity's collider
