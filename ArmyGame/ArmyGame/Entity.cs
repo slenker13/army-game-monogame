@@ -111,8 +111,32 @@ namespace ArmyGame
         // Checks if the collider intersects the other entity's collider
         public bool CheckCollision(Entity other)
         {
-            // TODO: implement
-            return false;
+            // Collider sides
+            int left, otherLeft;
+            int right, otherRight;
+            int top, otherTop;
+            int bottom, otherBottom;
+
+            // Calculate sides
+            left = Collider.X;
+            right = Collider.X + Collider.Width;
+            top = Collider.Y;
+            bottom = Collider.Y + Collider.Height;
+
+            // Calculate other's sides
+            otherLeft = other.Collider.X;
+            otherRight = other.Collider.X + other.Collider.Width;
+            otherTop = other.Collider.Y;
+            otherBottom = other.Collider.Y + other.Collider.Height;
+
+            // Check if sides are outside
+            if (bottom <= otherTop) return false;
+            if (top >= otherBottom) return false;
+            if (right <= otherLeft) return false;
+            if (left >= otherRight) return false;
+
+            // Intersection
+            return true;
         }
 
         // Render the entity to the screen

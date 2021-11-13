@@ -29,7 +29,7 @@ namespace ArmyGame
         }
 
         // Move the actor
-        public virtual void Move(int levelWidth, int levelHeight)
+        public virtual void Move(int levelWidth, int levelHeight, List<Entity> entityList)
         {
             // Move left or right
             Position = new Vector2(Position.X + Velocity.X, Position.Y);
@@ -40,6 +40,13 @@ namespace ArmyGame
                 Position = new Vector2(Position.X - Velocity.X, Position.Y);
             }
             // Check collision
+            foreach (Entity other in entityList)
+            {
+                if (other != this && CheckCollision(other))
+                {
+                    Position = new Vector2(Position.X - Velocity.X, Position.Y);
+                }
+            }
 
             // Move up or down
             Position = new Vector2(Position.X, Position.Y + Velocity.Y);
@@ -49,8 +56,14 @@ namespace ArmyGame
             {
                 Position = new Vector2(Position.X, Position.Y - Velocity.Y);
             }
-
             // Check collision
+            foreach (Entity other in entityList)
+            {
+                if (other != this && CheckCollision(other))
+                {
+                    Position = new Vector2(Position.X, Position.Y - Velocity.Y);
+                }
+            }
         }
     }
 }

@@ -33,12 +33,12 @@ namespace ArmyGame
         }
 
         // Updates the player
-        public void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int levelWidth, int levelHeight, Vector2 cameraPosition)
+        public void Update(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState, int levelWidth, int levelHeight, Vector2 cameraPosition, List<Entity> entityList)
         {
             CalculateVelocity(gameTime, keyboardState);
             CalculateAngle(mouseState, cameraPosition);
 
-            Move(levelWidth, levelHeight);
+            Move(levelWidth, levelHeight, entityList);
         }
 
         private void CalculateVelocity(GameTime gameTime, KeyboardState keyboardState)
