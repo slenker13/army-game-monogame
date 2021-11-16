@@ -152,5 +152,11 @@ namespace ArmyGame
             Vector2 adjPosition = new Vector2(Position.X - cameraPosition.X + Width / 2, Position.Y - cameraPosition.Y + Height / 2);
             spriteBatch.Draw(Texture, adjPosition, null, Color.White, angle, new Vector2(Width / 2, Height / 2), 1.0f, SpriteEffects.None, 0f);
         }
+
+        // Returns the position of the center of the entity
+        public Vector2 GetCenter()
+        {
+           return new Vector2(Position.X + Width / 2, Position.Y + Height / 2);
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace ArmyGame
 
         // Game objects
         BulletManager bulletManager;
+        Enemy enemy1;
 
         // Input states
         KeyboardState keyboardState;
@@ -77,6 +78,9 @@ namespace ArmyGame
             wall1 = new Wall(GraphicsDevice, new Vector2(600f, 300f), 40, 400, Color.Black);
             entityList.Add(wall1);
 
+            enemy1 = new Enemy(new Vector2(5, 5));
+            entityList.Add(enemy1);
+
             base.Initialize();
         }
 
@@ -86,6 +90,7 @@ namespace ArmyGame
 
             background = Content.Load<Texture2D>("Textures/Backgrounds/background");
             player.Texture = Content.Load<Texture2D>("Textures/Entities/player");
+            enemy1.Texture = Content.Load<Texture2D>("Textures/Entities/enemy");
             font = Content.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -103,6 +108,33 @@ namespace ArmyGame
             camera.Update(new Vector2((player.Position.X + player.Width / 2) - _graphics.PreferredBackBufferWidth / 2, (player.Position.Y + player.Height / 2) - _graphics.PreferredBackBufferHeight / 2));
             bulletManager.UpdateBullets(gameTime, levelWidth, levelHeight, entityList);
 
+            // Update enemies
+            foreach (Entity entity in entityList)
+            {
+                if (entity is Enemy)
+                {
+                    ((Enemy)entity).Update(gameTime, levelWidth, levelHeight, entityList, bulletManager);
+                }
+            }
+
+            // Remove entities
+            for (int i = entityList.Count - 1; i >= 0; i--)
+            {
+                if (entityList[i].Remove)
+                {
+                    if (entityList[i] is Player)
+                    {
+                        Exit();
+                    }
+                    else if (entityList[i] is Enemy)
+                    {
+                        score++;
+                    }
+
+                    entityList.RemoveAt(i);
+                }
+            }
+
             base.Update(gameTime);
         }
 
@@ -119,11 +151,18 @@ namespace ArmyGame
             _spriteBatch.Draw(background, new Vector2(0, 0), camera.CameraRect, Color.White);
 
             // Draw entities
-            player.Draw(_spriteBatch, camera.Position);
-            wall1.Draw(_spriteBatch, camera.Position);
+            //player.Draw(_spriteBatch, camera.Position);
+            //wall1.Draw(_spriteBatch, camera.Position);
+            foreach (Entity entity in entityList)
+            {
+                dynamic d = entity;
+                d.Draw(_spriteBatch, camera.Position);
+            }
+
             bulletManager.DrawBullets(_spriteBatch, camera.Position);
 
             // Draw text
+            _spriteBatch.DrawString(font, "Score: " + score, new Vector2(10, 10), Color.Black);
             // _spriteBatch.DrawString(font, "FPS: " + frameRate, new Vector2(_graphics.PreferredBackBufferWidth - 100, 10), Color.Black);
 
             _spriteBatch.End();
