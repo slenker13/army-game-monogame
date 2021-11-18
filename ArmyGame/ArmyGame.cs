@@ -29,7 +29,7 @@ namespace ArmyGame
 
         // Game objects
         BulletManager bulletManager;
-        Enemy enemy1;
+        EnemySpawner enemySpawner;
 
         // Input states
         KeyboardState keyboardState;
@@ -70,6 +70,9 @@ namespace ArmyGame
             // Bullet manager
             bulletManager = new BulletManager(GraphicsDevice, 5);
 
+            // Enemy spawner
+            enemySpawner = new EnemySpawner();
+
             // Create player
             player = new Player(new Vector2(levelWidth / 2, levelHeight / 2));
             entityList.Add(player);
@@ -78,9 +81,6 @@ namespace ArmyGame
             wall1 = new Wall(GraphicsDevice, new Vector2(600f, 300f), 40, 400, Color.Black);
             entityList.Add(wall1);
 
-            enemy1 = new Enemy(new Vector2(5, 5));
-            entityList.Add(enemy1);
-
             base.Initialize();
         }
 
@@ -88,9 +88,10 @@ namespace ArmyGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Load textures
             background = Content.Load<Texture2D>("Textures/Backgrounds/background");
             player.Texture = Content.Load<Texture2D>("Textures/Entities/player");
-            enemy1.Texture = Content.Load<Texture2D>("Textures/Entities/enemy");
+            enemySpawner.EnemyTexture = Content.Load<Texture2D>("Textures/Entities/enemy");
             font = Content.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -134,6 +135,9 @@ namespace ArmyGame
                     entityList.RemoveAt(i);
                 }
             }
+
+            // Spawn new enemies
+            enemySpawner.Update(gameTime, entityList, levelWidth, levelHeight);
 
             base.Update(gameTime);
         }
